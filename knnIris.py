@@ -167,7 +167,7 @@ err = float(erros) / (erros + acertos)
 # Calcula o erro da classe
 errClasse1 = float(ec1) / (ac1 + ec1)
 errClasse2 = float(ec2) / (ac2 + ec2)
-#errClasse3 = float(ec3) / (ac3 + ec3)
+errClasse3 = float(ec3) / (ac3 + ec3)
 
 # Gera matriz confusão
 matriz = matrizConfusao(listaClassificada, classes)
@@ -177,7 +177,7 @@ print "Erros : " + str(erros)
 print "Erro de Classificação : " + str(err)
 print "Erro Classe " + classes[0] + " : " + str(errClasse1)
 print "Erro Classe " + classes[1] + " : " + str(errClasse2)
-#print "Erro Classe " + classes[2] + " :" + str(errClasse3)
+print "Erro Classe " + classes[2] + " :" + str(errClasse3)
 
 print "Matriz Confusão:"
 print "| %d %d %d |" % (matriz[0][0], matriz[0][1], matriz[0][2])
