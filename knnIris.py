@@ -62,29 +62,28 @@ def classificar(treino, individuo, k=1):
 
         # percorre os k vizinhos
         for i in range(k):
+
             # verifica se pertence a classe setosa
-            if setosa[1] == distancias[i][1] and distancias[i][0] != 0:
+            if setosa[1] == distancias[i][1]:
 #               incrementa o contador de setosa
-                setosa[0] +=1/distancias[i][0]
+                setosa[0] +=1
             # verifica se pertence a classe versicolor
-            elif versicolor[1] == distancias[i][1] and distancias[i][0] != 0:
+            elif versicolor[1] == distancias[i][1]:
                 # incrementa o contador de versicolor
-                versicolor[0] +=1/distancias[i][0]
+                versicolor[0] +=1
 #                 verifica e incremena , caso virginica
-            elif virginica[1] == distancias[i][1] and distancias[i][0] != 0:
-                virginica[0] +=1/distancias[i][0]
+            elif virginica[1] == distancias[i][1]:
+                virginica[0] +=1
+
         # rank para ordenar as classes
         rank = []
         rank.append(setosa)
         rank.append(versicolor)
         rank.append(virginica)
         # ordena do menor para o maior
-        print rank
-        print '---------------------------------'
         rank.sort(cmp=None, key=None, reverse=False)
         # pega o maior valor
-        print rank
-        classificacao = rank[0][1]
+        classificacao = rank[-1][1]
 
     return classificacao
 
@@ -109,13 +108,9 @@ def matrizConfusao(listaClassificada, listaClasses):
 # carrega o arquivo de treino e classificação
 listaTreino = loadFile('iris-treino.txt', ',')
 listaClassificar = loadFile('iris-teste.txt', ',')
-# print 'lista treino:'
-# print listaTreino
-# print 'lista teste'
-# print listaClassificar
+
 # declaração da lista de individuos classificados
 listaClassificada = []
-
 
 # Classifica os individuos
 
@@ -144,7 +139,6 @@ for individuo in listaClassificada:
     if classes.count(individuo[4]) == 0:
 
         classes.append(individuo[4])
-
 # Conta erros e acertos de classificação
 for individuo in listaClassificada:
     # Verifica se a Classificação foi correta
@@ -173,19 +167,19 @@ err = float(erros) / (erros + acertos)
 # Calcula o erro da classe
 errClasse1 = float(ec1) / (ac1 + ec1)
 errClasse2 = float(ec2) / (ac2 + ec2)
-errClasse3 = float(ec3) / (ac3 + ec3)
+#errClasse3 = float(ec3) / (ac3 + ec3)
 
 # Gera matriz confusão
 matriz = matrizConfusao(listaClassificada, classes)
 
-print "Acertos: " + str(acertos)
-print "Erros: " + str(erros)
-#print "Erro de Classificação: " + str(err)
-#print "Erro Classe " + classes[0] + " :" + str(errClasse1)
-#print "Erro Classe " + classes[1] + " :" + str(errClasse2)
+print "Acertos : " + str(acertos)
+print "Erros : " + str(erros)
+print "Erro de Classificação : " + str(err)
+print "Erro Classe " + classes[0] + " : " + str(errClasse1)
+print "Erro Classe " + classes[1] + " : " + str(errClasse2)
 #print "Erro Classe " + classes[2] + " :" + str(errClasse3)
 
-#print "Matriz Confusão:"
-#print " %d %d %d" % (matriz[0][0], matriz[0][1], matriz[0][2])
-#print " %d %d %d" % (matriz[1][0], matriz[1][1], matriz[1][2])
-#print " %d %d %d" % (matriz[2][0], matriz[2][1], matriz[2][2])
+print "Matriz Confusão:"
+print "| %d %d %d |" % (matriz[0][0], matriz[0][1], matriz[0][2])
+print "| %d %d %d |" % (matriz[1][0], matriz[1][1], matriz[1][2])
+print "| %d %d %d |" % (matriz[2][0], matriz[2][1], matriz[2][2])
