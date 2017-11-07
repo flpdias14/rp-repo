@@ -36,7 +36,7 @@ def calcDistEuclides(individuo1, individuo2):
     return sqrt(soma)
 
 # Método para classificar um indivíduo, retorna a classe a que o indivíduo pertence
-def classificar(treino, individuo, k=1):
+def classificar(treino, individuo, k=1, peso=False):
     # declaração da lista de distancias
     distancias = []
 
@@ -55,35 +55,67 @@ def classificar(treino, individuo, k=1):
     if k == 1:
         classificacao = distancias[0][1]
     else:
-        # Declara listas com labels para contagem de cada classe
-        setosa = [0.0, 'Iris-setosa']
-        versicolor = [0.0,'Iris-versicolor']
-        virginica = [0.0,'Iris-virginica']
+        if peso:
+            # Declara listas com labels para contagem de cada classe
+            setosa = [0.0, 'Iris-setosa']
+            versicolor = [0.0,'Iris-versicolor']
+            virginica = [0.0,'Iris-virginica']
 
-        # percorre os k vizinhos
-        for i in range(k):
+            # percorre os k vizinhos
+            for i in range(k):
 
-            # verifica se pertence a classe setosa
-            if setosa[1] == distancias[i][1]:
-#               incrementa o contador de setosa
-                setosa[0] +=1
-            # verifica se pertence a classe versicolor
-            elif versicolor[1] == distancias[i][1]:
-                # incrementa o contador de versicolor
-                versicolor[0] +=1
-#                 verifica e incremena , caso virginica
-            elif virginica[1] == distancias[i][1]:
-                virginica[0] +=1
+                # verifica se pertence a classe setosa
+                if setosa[1] == distancias[i][1] and distancias[i][0] != 0:
+    #               incrementa o contador de setosa
+                    setosa[0] +=1/distancias[i][0]
+                # verifica se pertence a classe versicolor
+                elif versicolor[1] == distancias[i][1] and distancias[i][0] != 0:
+                    # incrementa o contador de versicolor
+                    versicolor[0] +=1/ distancias[i][0]
+    #                 verifica e incremena , caso virginica
+                elif virginica[1] == distancias[i][1] and distancias[i][0] != 0:
+                    virginica[0] +=1/distancias[i][0]
 
-        # rank para ordenar as classes
-        rank = []
-        rank.append(setosa)
-        rank.append(versicolor)
-        rank.append(virginica)
-        # ordena do menor para o maior
-        rank.sort(cmp=None, key=None, reverse=False)
-        # pega o maior valor
-        classificacao = rank[-1][1]
+            # rank para ordenar as classes
+            rank = []
+            rank.append(setosa)
+            rank.append(versicolor)
+            rank.append(virginica)
+            # ordena do menor para o maior
+            rank.sort(cmp=None, key=None, reverse=False)
+
+            # print rank # pega o maior valor
+            classificacao = rank[-1][1]
+        else:
+            # Declara listas com labels para contagem de cada classe
+            setosa = [0.0, 'Iris-setosa']
+            versicolor = [0.0,'Iris-versicolor']
+            virginica = [0.0,'Iris-virginica']
+
+            # percorre os k vizinhos
+            for i in range(k):
+
+                # verifica se pertence a classe setosa
+                if setosa[1] == distancias[i][1]:
+    #               incrementa o contador de setosa
+                    setosa[0] +=1
+                # verifica se pertence a classe versicolor
+                elif versicolor[1] == distancias[i][1]:
+                    # incrementa o contador de versicolor
+                    versicolor[0] +=1
+    #                 verifica e incremena , caso virginica
+                elif virginica[1] == distancias[i][1]:
+                    virginica[0] +=1
+
+            # rank para ordenar as classes
+            rank = []
+            rank.append(setosa)
+            rank.append(versicolor)
+            rank.append(virginica)
+            # ordena do menor para o maior
+            rank.sort(cmp=None, key=None, reverse=False)
+            # pega o maior valor
+            classificacao = rank[-1][1]
 
     return classificacao
 
@@ -115,7 +147,7 @@ listaClassificada = []
 # Classifica os individuos
 
 for individuo in listaClassificar:
-    p = classificar(listaTreino, individuo, k=5)
+    p = classificar(listaTreino, individuo, k=5, peso=True)
     individuo.insert(5, p)
     listaClassificada.append(individuo)
 
